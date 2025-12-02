@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -14,19 +14,37 @@ from ..schemas.game import (
 )
 from ..services.game_service import GameService
 from ..repositories.memory import InMemoryGameRepository
-from ..domain.enums import Difficulty, Player
+from ..core.settings import Settings
 from ..domain.exceptions import GameOverError, InvalidMoveError
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/games", tags=["games"])
 
-# Simple dependency: use in-memory repo for now. Replace with DB-backed repo later.
-_repo = InMemoryGameRepository()
-_service = GameService(_repo)
+_memory_repo = InMemoryGameRepository()
+_memory_service = GameService(_memory_repo)
+_settings = Settings.from_env()
+_use_db = bool(_settings.database_url)
 
-def get_service() -> GameService:
-    return _service
+def maybe_session():
+    if not _use_db:
+        # DB disabled; no session
+        yield None
+        return
+    # Import only when DB is enabled to avoid hard dependency when not used
+    from ..db.session import get_session
+    # Delegate lifecycle to get_session generator
+    yield from get_session()
+
+
+def get_service(db: Any = Depends(maybe_session)) -> GameService:
+    if _use_db and db is not None:
+        # Dynamic import to avoid top-level dependency
+        from ..repositories.sqlalchemy import SQLAlchemyGameRepository
+
+        repo = SQLAlchemyGameRepository(db)
+        return GameService(repo)
+    return _memory_service
 
 
 @router.post("", response_model=CreateGameResponse, responses={400: {"model": ErrorResponse}})
