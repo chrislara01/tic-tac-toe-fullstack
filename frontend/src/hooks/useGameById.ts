@@ -28,8 +28,25 @@ export function useGameById(gameId: string, opts: Options = {}) {
     setError(null);
     try {
       const res = await getGame(gameId);
-      setGame(res);
-      lastStable.current = res;
+      setGame((current) => {
+        if (!current) {
+          lastStable.current = res;
+          return res;
+        }
+        const curMoves = current.moves?.length ?? 0;
+        const resMoves = res.moves?.length ?? 0;
+        const curUpdated = Date.parse(current.updated_at);
+        const resUpdated = Date.parse(res.updated_at);
+
+        // If server response appears older than current local state, ignore it
+        const isResOlderByTime = !Number.isNaN(curUpdated) && !Number.isNaN(resUpdated) && resUpdated < curUpdated;
+        const isResOlderByMoves = resMoves < curMoves;
+        if (isResOlderByTime || isResOlderByMoves) {
+          return current;
+        }
+        lastStable.current = res;
+        return res;
+      });
     } catch (e: any) {
       setError(e?.message ?? 'Failed to load game');
     } finally {
@@ -65,8 +82,24 @@ export function useGameById(gameId: string, opts: Options = {}) {
 
       try {
         const res: MoveResponse = await postMove(game.id, { position });
-        setGame(res);
-        lastStable.current = res;
+        setGame((current) => {
+          // If for any reason the response is older (fewer moves or older updated_at), keep current
+          if (!current) {
+            lastStable.current = res;
+            return res;
+          }
+          const curMoves = current.moves?.length ?? 0;
+          const resMoves = res.moves?.length ?? 0;
+          const curUpdated = Date.parse(current.updated_at);
+          const resUpdated = Date.parse(res.updated_at);
+          const resIsOlderByMoves = resMoves < curMoves;
+          const resIsOlderByTime = !Number.isNaN(curUpdated) && !Number.isNaN(resUpdated) && resUpdated < curUpdated;
+          if (resIsOlderByMoves || resIsOlderByTime) {
+            return current;
+          }
+          lastStable.current = res;
+          return res;
+        });
       } catch (e: any) {
         // revert on error
         setGame(prev);
