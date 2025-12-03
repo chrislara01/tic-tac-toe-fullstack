@@ -9,13 +9,15 @@ export interface StatusBarProps {
 }
 
 export const StatusBar: React.FC<StatusBarProps> = ({ game, error, loading }) => {
-  const { className, variant, message, winner, nextPlayer } = useGameStatus(game, {
+  const { className, variant, winner, nextPlayer } = useGameStatus(game, {
     loading: !!loading,
     error: error ?? undefined,
   });
 
-  let content: React.ReactNode = message;
-  if (variant === 'win' && winner) {
+  let content: React.ReactNode = null;
+  if (variant === 'error' && error) {
+    content = error;
+  } else if (variant === 'win' && winner) {
     content = (
       <>
         Winner: <strong>{winner.toUpperCase()}</strong>
@@ -27,6 +29,14 @@ export const StatusBar: React.FC<StatusBarProps> = ({ game, error, loading }) =>
         Next player: <strong>{nextPlayer.toUpperCase()}</strong>
       </>
     );
+  } else if (variant === 'in_progress' && loading && nextPlayer) {
+    content = (
+      <>
+        Next player: <strong>{nextPlayer.toUpperCase()}</strong>
+      </>
+    );
+  } else if (variant === 'draw') {
+    content = 'Draw!';
   }
 
   return (

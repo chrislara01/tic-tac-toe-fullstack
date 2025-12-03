@@ -27,7 +27,7 @@ const GamePage: React.FC = () => {
     <div className="container">
       <header>
         <h1>Tic-Tac-Toe</h1>
-        <p className="subtitle">Single player vs AI</p>
+        <p className="subtitle">Single player tic tac toe game</p>
       </header>
 
       {game && <StatusBar game={game} loading={loading} />}
