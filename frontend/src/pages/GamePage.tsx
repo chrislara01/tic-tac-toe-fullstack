@@ -39,7 +39,7 @@ const GamePage: React.FC = () => {
           <div className="panel">
             <div className="info">
               <div>
-                <strong>You:</strong> {game.human_symbol} &nbsp; <strong>AI:</strong> {game.computer_symbol}
+                <strong>You:</strong> {game.human_symbol.toUpperCase()} &nbsp; <strong>AI:</strong> {game.computer_symbol.toUpperCase()}
               </div>
               <div>
                 <strong>Difficulty:</strong> {game.difficulty}

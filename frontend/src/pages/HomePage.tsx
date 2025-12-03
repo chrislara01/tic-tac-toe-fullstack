@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
     <div className="container">
       <header>
         <h1>Tic-Tac-Toe</h1>
-        <p className="subtitle">Single player vs AI</p>
+        <p className="subtitle">Single player tic tac toe game</p>
       </header>
       {error && <div className="status error">{error}</div>}
       <GameOptions onStart={onStart} creating={creating} />

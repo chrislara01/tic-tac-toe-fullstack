@@ -22,8 +22,8 @@ export const GameOptions: React.FC<GameOptionsProps> = ({ onStart, creating = fa
         <label>
           Difficulty
           <select value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty)}>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
+            <option value="easy">Easy (Aleatory)</option>
+            <option value="medium">Medium (Heuristic)</option>
             <option value="hard">Hard (Gemini)</option>
           </select>
         </label>
@@ -37,8 +37,8 @@ export const GameOptions: React.FC<GameOptionsProps> = ({ onStart, creating = fa
         <label>
           Your Symbol
           <select value={humanSymbol} onChange={(e) => setHumanSymbol(e.target.value as Player)}>
-            <option value="x">x</option>
-            <option value="o">o</option>
+            <option value="x">X</option>
+            <option value="o">O</option>
           </select>
         </label>
       </div>

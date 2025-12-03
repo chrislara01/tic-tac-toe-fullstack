@@ -18,13 +18,13 @@ export const StatusBar: React.FC<StatusBarProps> = ({ game, error, loading }) =>
   if (variant === 'win' && winner) {
     content = (
       <>
-        Winner: <strong>{winner}</strong>
+        Winner: <strong>{winner.toUpperCase()}</strong>
       </>
     );
   } else if (variant === 'in_progress' && nextPlayer && !loading) {
     content = (
       <>
-        Next player: <strong>{nextPlayer}</strong>
+        Next player: <strong>{nextPlayer.toUpperCase()}</strong>
       </>
     );
   }

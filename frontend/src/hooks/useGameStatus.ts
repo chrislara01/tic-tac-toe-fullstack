@@ -28,7 +28,7 @@ export function useGameStatus(game: GameRead, opts: Options = {}) {
       variant = 'win';
       cls += ' win';
       winner = game.status === 'x_won' ? 'x' : 'o';
-      message = `Winner: ${winner}`;
+      message = `Winner: ${winner.toUpperCase()}`;
       return { className: cls, variant, message, winner, nextPlayer, loading } as const;
     }
 
@@ -43,7 +43,7 @@ export function useGameStatus(game: GameRead, opts: Options = {}) {
     variant = 'in_progress';
     cls += ' in-progress';
     nextPlayer = game.next_player;
-    message = loading ? 'Waiting for move…' : `Next player: ${nextPlayer}`;
+    message = loading ? `Waiting for ${nextPlayer.toUpperCase()} to play…` : `Next player: ${nextPlayer.toUpperCase()}`;
     return { className: cls, variant, message, winner, nextPlayer, loading } as const;
   }, [error, game.status, game.next_player, loading]);
 

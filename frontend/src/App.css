@@ -139,7 +139,15 @@ select:hover:not(:disabled) {
 .status.draw { background: #37474f; color: #eceff1; }
 .status.error { background: #b71c1c; color: #ffebee; }
 
-.actions button.secondary {
+.actions .secondary {
   background: transparent;
   border: 1px solid #666;
+  padding: 8px 24px;
+  border-radius: 8px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
