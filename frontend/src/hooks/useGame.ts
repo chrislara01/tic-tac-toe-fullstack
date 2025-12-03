@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import type { CreateGameRequest, CreateGameResponse, GameRead, MoveResponse } from '../api/types';
+import type { CreateGameRequest, GameRead, MoveResponse } from '../api/types';
 import { createGame as apiCreateGame, postMove } from '../api/client';
 
 export function useGame() {

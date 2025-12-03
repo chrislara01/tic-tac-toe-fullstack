@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { memo } from 'react';
 import type { GameRead } from '../api/types';
+import { useGameStatus } from '../hooks/useGameStatus';
 
 export interface StatusBarProps {
-  game: GameRead | null;
-  loading: Boolean | null;
+  game: GameRead;
+  loading?: boolean | null;
   error?: string | null;
 }
 
-export const StatusBar: React.FC<StatusBarProps> = ({ game, error, loading}) => {
-  if (error) return <div className="status error">{error}</div>;
-  if (!game) return <div className="status">Create a game to start playing.</div>;
+export const StatusBar: React.FC<StatusBarProps> = ({ game, error, loading }) => {
+  const { className, variant, message, winner, nextPlayer } = useGameStatus(game, {
+    loading: !!loading,
+    error: error ?? undefined,
+  });
 
-  if (game.status === 'x_won' || game.status === 'o_won') {
-    const winner = game.status === 'x_won' ? 'x' : 'o';
-    return <div className="status win">Winner: {winner}</div>;
-  }
-  if (game.status === 'draw') {
-    return <div className="status draw">Draw!</div>;
+  let content: React.ReactNode = message;
+  if (variant === 'win' && winner) {
+    content = (
+      <>
+        Winner: <strong>{winner}</strong>
+      </>
+    );
+  } else if (variant === 'in_progress' && nextPlayer && !loading) {
+    content = (
+      <>
+        Next player: <strong>{nextPlayer}</strong>
+      </>
+    );
   }
 
   return (
-    <div className="status in-progress">
-      {loading ? <div className="hint">Waiting for move…</div> : <div> Next player: <strong>{game.next_player}</strong></div>}
+    <div className={className} aria-live="polite">
+      {content}
     </div>
   );
 };
 
-export default StatusBar;
+export default memo(StatusBar);
