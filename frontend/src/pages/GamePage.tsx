@@ -1,8 +1,9 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Board } from '../components/Board';
 import { StatusBar } from '../components/StatusBar';
 import { useGameById } from '../hooks/useGameById';
+import type { GameRead } from '../api/types';
 
 const GamePage: React.FC = () => {
   const params = useParams();
@@ -17,7 +18,10 @@ const GamePage: React.FC = () => {
     );
   }
 
-  const { game, loading, error, canPlay, play } = useGameById(gameId);
+  const location = useLocation();
+  const initialGame = (location.state as any)?.game as GameRead | undefined;
+
+  const { game, loading, error, canPlay, play } = useGameById(gameId, { initialGame: initialGame ?? null });
 
   return (
     <div className="container">
@@ -26,7 +30,7 @@ const GamePage: React.FC = () => {
         <p className="subtitle">Single player vs AI</p>
       </header>
 
-      {game && <StatusBar game={game} error={error ?? undefined} loading={loading} />}
+      {game && <StatusBar game={game} loading={loading} />}
       {!game && error && <div className="status error">{error}</div>}
 
       {game && (

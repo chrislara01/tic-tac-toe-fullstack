@@ -14,7 +14,7 @@ const HomePage: React.FC = () => {
     setError(null);
     try {
       const game = await createGame(payload);
-      navigate(`/game/${game.id}`);
+      navigate(`/game/${game.id}`, { state: { game } });
     } catch (e: any) {
       setError(e?.message ?? 'Failed to create game');
     } finally {

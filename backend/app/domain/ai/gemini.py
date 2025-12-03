@@ -24,7 +24,7 @@ class GeminiStrategy(Strategy):
         # Local import to avoid circular dependency
         from .medium import HeuristicStrategy
 
-        logger.warning("gemini_fallback_to_heuristic")
+        logger.warning("Gemini will fallback to the heuristic mode")
         return HeuristicStrategy().select_move(board, me)
 
     @staticmethod
@@ -77,7 +77,7 @@ class GeminiStrategy(Strategy):
         try:
             import google.generativeai as genai
         except Exception:
-            logger.exception("gemini_sdk_not_available")
+            logger.exception("The Gemini SDK is not available")
             return self._fallback(board, me)
 
         try:
@@ -124,17 +124,17 @@ class GeminiStrategy(Strategy):
             # Guardrails: don't miss immediate win; block immediate opponent win
             win = self._find_immediate_win(board, me)
             if win and win in board.available_positions() and win != pos:
-                logger.info("gemini_guard_override_win", extra={"chosen": pos, "override": win})
+                logger.info("The Gemini guardrail to win is activated", extra={"chosen": pos, "override": win})
                 return win
             block = self._find_block(board, me)
             if block and block in board.available_positions() and block != pos:
-                logger.info("gemini_guard_override_block", extra={"chosen": pos, "override": block})
+                logger.info("The Gemini guardrail to block is activated", extra={"chosen": pos, "override": block})
                 return block
 
             # Early-game preference: take center if available (strong heuristic)
             total_marks = board.to_string().count("x") + board.to_string().count("o")
             if total_marks <= 1 and 5 in board.available_positions() and pos != 5:
-                logger.info("gemini_guard_prefer_center", extra={"chosen": pos, "override": 5})
+                logger.info("The Gemini guardrail to prefer the center was activated", extra={"chosen": pos, "override": 5})
                 return 5
 
             return pos

@@ -12,14 +12,16 @@ function applyMoveToBoard(board: string, position: number, symbol: Player): stri
   return cells.join('');
 }
 
-export function useGameById(gameId: string) {
-  const [game, setGame] = useState<GameRead | null>(null);
+type Options = { initialGame?: GameRead | null };
+
+export function useGameById(gameId: string, opts: Options = {}) {
+  const [game, setGame] = useState<GameRead | null>(opts.initialGame ?? null);
   const [loading, setLoading] = useState(false); // for play action
-  const [initialLoading, setInitialLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(!opts.initialGame);
   const [error, setError] = useState<string | null>(null);
 
   // keep a ref to revert state on optimistic errors
-  const lastStable = useRef<GameRead | null>(null);
+  const lastStable = useRef<GameRead | null>(opts.initialGame ?? null);
 
   const load = useCallback(async () => {
     setInitialLoading(true);
