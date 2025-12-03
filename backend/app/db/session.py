@@ -7,8 +7,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.settings import Settings
+import logging
 
 settings = Settings.from_env()
+logger = logging.getLogger(__name__)
 
 def _normalize_url(url: str) -> str:
     if url.startswith("postgres://"):
@@ -30,10 +32,15 @@ def get_session() -> Generator[Session, None, None]:
         raise RuntimeError("DATABASE_URL not configured; cannot create DB session")
     db: Session = _SessionLocal()
     try:
+        logger.debug("db_session_opened")
         yield db
         db.commit()
+        logger.debug("db_session_committed")
     except Exception:
+        logger.exception("db_session_error")
         db.rollback()
+        logger.debug("db_session_rolled_back")
         raise
     finally:
         db.close()
+        logger.debug("db_session_closed")

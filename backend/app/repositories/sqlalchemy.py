@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -10,18 +11,25 @@ from ..domain.game import Game
 from ..db.models import GameModel
 from .base import GameRepository
 
+logger = logging.getLogger(__name__)
+
 
 class SQLAlchemyGameRepository(GameRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
     def get(self, game_id: str) -> Optional[Game]:
+        logger.debug("repo_get_game", extra={"game_id": game_id})
         model = self.session.get(GameModel, game_id)
         if not model:
+            logger.debug("repo_get_game_not_found", extra={"game_id": game_id})
             return None
-        return self._to_domain(model)
+        domain = self._to_domain(model)
+        logger.debug("repo_get_game_ok", extra={"game_id": game_id, "status": domain.status.value})
+        return domain
 
     def save(self, game: Game) -> Game:
+        logger.debug("repo_save_game", extra={"game_id": game.id, "status": game.status.value})
         model = self.session.get(GameModel, game.id)
         if model is None:
             model = GameModel(
@@ -37,6 +45,7 @@ class SQLAlchemyGameRepository(GameRepository):
                 updated_at=game.updated_at,
             )
             self.session.add(model)
+            logger.debug("repo_insert_game", extra={"game_id": game.id})
         else:
             model.board = game.board.to_string()
             model.next_player = game.next_player.value
@@ -46,6 +55,7 @@ class SQLAlchemyGameRepository(GameRepository):
             model.computer_symbol = game.computer_symbol.value
             model.moves = list(game.moves) if game.moves else []
             model.updated_at = game.updated_at
+            logger.debug("repo_update_game", extra={"game_id": game.id})
         # Commit is managed by dependency in get_session
         return game
 

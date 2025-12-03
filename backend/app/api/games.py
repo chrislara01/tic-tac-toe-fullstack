@@ -64,6 +64,15 @@ async def create_game(payload: CreateGameRequest, svc: GameService = Depends(get
             first_player_is_human=first_is_human,
             human_symbol=payload.human_symbol,
         )
+        logger.info(
+            "create_game_ok",
+            extra={
+                "game_id": game.id,
+                "difficulty": game.difficulty.value,
+                "first_player": payload.first_player,
+                "human_symbol": payload.human_symbol.value,
+            },
+        )
         return CreateGameResponse(
             id=game.id,
             board=game.board.to_string(),
@@ -86,6 +95,7 @@ async def get_game(game_id: str, svc: GameService = Depends(get_service)) -> Cre
     game = svc.get_game(game_id)
     if not game:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="game_not_found")
+    logger.debug("get_game_ok", extra={"game_id": game_id, "status": game.status.value})
     return CreateGameResponse(
         id=game.id,
         board=game.board.to_string(),
@@ -104,6 +114,10 @@ async def get_game(game_id: str, svc: GameService = Depends(get_service)) -> Cre
 async def post_move(game_id: str, payload: MoveRequest, svc: GameService = Depends(get_service)) -> MoveResponse:
     try:
         game, ai_move = svc.play_human_move(game_id, payload.position)
+        logger.info(
+            "human_move_ok",
+            extra={"game_id": game_id, "human_pos": payload.position, "ai_pos": ai_move},
+        )
         return MoveResponse(
             id=game.id,
             board=game.board.to_string(),
