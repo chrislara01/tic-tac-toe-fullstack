@@ -10,7 +10,12 @@ from app.core.settings import Settings
 
 settings = Settings.from_env()
 
-_engine = create_engine(settings.database_url) if settings.database_url else None
+def _normalize_url(url: str) -> str:
+    if url.startswith("postgres://"):
+        return url.replace("postgres://", "postgresql+psycopg2://", 1)
+    return url
+
+_engine = create_engine(_normalize_url(settings.database_url)) if settings.database_url else None
 _SessionLocal = sessionmaker(bind=_engine, autocommit=False, autoflush=False) if _engine else None
 
 

@@ -7,10 +7,9 @@ from alembic import context
 import os
 from dotenv import load_dotenv
   
-# Import SQLAlchemy Base and models so metadata is populated
 from app.db.base import Base
-from app import db as _db_pkg  # noqa: F401
-from app.db import models as _models  # noqa: F401
+from app import db as _db_pkg
+from app.db import models as _models
   
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -36,6 +35,8 @@ load_dotenv()
 def get_url() -> str:
     url = os.getenv("DATABASE_URL")
     if url:
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql+psycopg2://", 1)
         return url
     return config.get_main_option("sqlalchemy.url")
   

@@ -21,9 +21,13 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/games", tags=["games"])
 
-_memory_repo = InMemoryGameRepository()
-_memory_service = GameService(_memory_repo)
 _settings = Settings.from_env()
+_memory_repo = InMemoryGameRepository()
+_memory_service = GameService(
+    _memory_repo,
+    gemini_api_key=_settings.gemini_api_key,
+    gemini_model=_settings.gemini_model,
+)
 _use_db = bool(_settings.database_url)
 
 def maybe_session():
@@ -43,7 +47,11 @@ def get_service(db: Any = Depends(maybe_session)) -> GameService:
         from ..repositories.sqlalchemy import SQLAlchemyGameRepository
 
         repo = SQLAlchemyGameRepository(db)
-        return GameService(repo)
+        return GameService(
+            repo,
+            gemini_api_key=_settings.gemini_api_key,
+            gemini_model=_settings.gemini_model,
+        )
     return _memory_service
 
 
