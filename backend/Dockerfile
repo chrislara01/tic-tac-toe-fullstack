@@ -32,5 +32,6 @@ COPY . .
 
 EXPOSE 8000
 
-# Start the FastAPI server
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Entrypoint handles migrations then starts FastAPI
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
