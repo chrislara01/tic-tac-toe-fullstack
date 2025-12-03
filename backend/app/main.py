@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from .api.routes import api_router
 from .core.logging import configure_logging
 from .core.settings import Settings
+from .core.middleware import RequestLoggingMiddleware
 
 settings = Settings.from_env()
 configure_logging(settings.log_level)
@@ -22,6 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Request logging
+app.add_middleware(RequestLoggingMiddleware)
 
 # Routers
 app.include_router(api_router)
