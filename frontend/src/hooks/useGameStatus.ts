@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { GameRead } from '../api/types';
+import type { GameRead } from '@/api/types';
 
 type Options = {
   loading?: boolean;

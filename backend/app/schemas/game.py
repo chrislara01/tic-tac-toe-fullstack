@@ -5,7 +5,7 @@ from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator
 
-from ..domain.enums import Difficulty, GameStatus, Player
+from app.domain.enums import Difficulty, GameStatus, Player
 
 
 class CreateGameRequest(BaseModel):

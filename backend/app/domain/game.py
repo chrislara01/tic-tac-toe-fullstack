@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from .board import Board
-from .enums import Difficulty, GameStatus, Player
+from app.domain.board import Board
+from app.domain.enums import Difficulty, GameStatus, Player
 
 
 @dataclass

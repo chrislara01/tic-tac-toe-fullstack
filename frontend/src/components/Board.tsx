@@ -1,5 +1,5 @@
 import React from 'react';
-import { INDEX_TO_POSITION } from '../api/types';
+import { INDEX_TO_POSITION } from '@/api/types';
 
 export interface BoardProps {
   board: string; // 9-char string in numpad order "789456123"

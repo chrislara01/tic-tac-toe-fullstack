@@ -5,11 +5,11 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from ..domain.board import Board
-from ..domain.enums import Difficulty, GameStatus, Player
-from ..domain.game import Game
-from ..db.models import GameModel
-from .base import GameRepository
+from app.domain.board import Board
+from app.domain.enums import Difficulty, GameStatus, Player
+from app.domain.game import Game
+from app.db.models import GameModel
+from app.repositories.base import GameRepository
 
 logger = logging.getLogger(__name__)
 

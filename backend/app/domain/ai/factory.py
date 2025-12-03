@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from ..enums import Difficulty
-from .base import Strategy
-from .easy import RandomStrategy
-from .medium import HeuristicStrategy
+from app.domain.enums import Difficulty
+from app.domain.ai.base import Strategy
+from app.domain.ai.easy import RandomStrategy
+from app.domain.ai.medium import HeuristicStrategy
 
 def strategy_for(
     difficulty: Difficulty,

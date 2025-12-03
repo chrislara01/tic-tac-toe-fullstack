@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import type { CreateGameRequest, GameRead, MoveResponse } from '../api/types';
-import { createGame as apiCreateGame, postMove } from '../api/client';
+import type { CreateGameRequest, GameRead, MoveResponse } from '@/api/types';
+import { createGame as apiCreateGame, postMove } from '@/api/client';
 
 export function useGame() {
   const [game, setGame] = useState<GameRead | null>(null);

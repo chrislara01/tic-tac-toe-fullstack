@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from .health import router as health_router
-from .games import router as games_router
+from app.api.health import router as health_router
+from app.api.games import router as games_router
 
 
 api_router = APIRouter()

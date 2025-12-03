@@ -5,10 +5,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from .api.routes import api_router
-from .core.logging import configure_logging
-from .core.settings import Settings
-from .core.middleware import RequestLoggingMiddleware
+from app.api.routes import api_router
+from app.core.logging import configure_logging
+from app.core.settings import Settings
+from app.core.middleware import RequestLoggingMiddleware
 
 settings = Settings.from_env()
 configure_logging(settings.log_level)

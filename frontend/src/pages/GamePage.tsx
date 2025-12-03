@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { Board } from '../components/Board';
-import { StatusBar } from '../components/StatusBar';
-import { useGameById } from '../hooks/useGameById';
-import type { GameRead } from '../api/types';
+import { Board } from '@/components/Board';
+import { StatusBar } from '@/components/StatusBar';
+import { useGameById } from '@/hooks/useGameById';
+import type { GameRead } from '@/api/types';
 
 const GamePage: React.FC = () => {
   const params = useParams();

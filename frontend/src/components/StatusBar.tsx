@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import type { GameRead } from '../api/types';
-import { useGameStatus } from '../hooks/useGameStatus';
+import type { GameRead } from '@/api/types';
+import { useGameStatus } from '@/hooks/useGameStatus';
 
 export interface StatusBarProps {
   game: GameRead;

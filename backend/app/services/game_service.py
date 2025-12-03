@@ -4,12 +4,12 @@ import logging
 import uuid
 from typing import Optional, Tuple
 
-from ..domain.ai.factory import strategy_for
-from ..domain.board import Board
-from ..domain.enums import Difficulty, GameStatus, Player
-from ..domain.exceptions import GameOverError, InvalidMoveError
-from ..domain.game import Game
-from ..repositories.base import GameRepository
+from app.domain.ai.factory import strategy_for
+from app.domain.board import Board
+from app.domain.enums import Difficulty, GameStatus, Player
+from app.domain.exceptions import GameOverError, InvalidMoveError
+from app.domain.game import Game
+from app.repositories.base import GameRepository
 
 logger = logging.getLogger(__name__)
 

@@ -146,6 +146,10 @@ select:hover:not(:disabled) {
   border-radius: 8px;
 }
 
+.actions .secondary:hover {
+  border-color: #4a51d8;
+}
+
 .info {
   display: flex;
   flex-direction: column;

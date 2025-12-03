@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GameOptions } from '../components/GameOptions';
-import type { CreateGameRequest } from '../api/types';
-import { createGame } from '../api/client';
+import { GameOptions } from '@/components/GameOptions';
+import type { CreateGameRequest } from '@/api/types';
+import { createGame } from '@/api/client';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();

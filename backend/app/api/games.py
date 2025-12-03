@@ -5,17 +5,17 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from ..schemas.errors import ErrorResponse
-from ..schemas.game import (
+from app.schemas.errors import ErrorResponse
+from app.schemas.game import (
     CreateGameRequest,
     CreateGameResponse,
     MoveRequest,
     MoveResponse,
 )
-from ..services.game_service import GameService
-from ..repositories.memory import InMemoryGameRepository
-from ..core.settings import Settings
-from ..domain.exceptions import GameOverError, InvalidMoveError
+from app.services.game_service import GameService
+from app.repositories.memory import InMemoryGameRepository
+from app.core.settings import Settings
+from app.domain.exceptions import GameOverError, InvalidMoveError
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ def maybe_session():
         yield None
         return
     # Import only when DB is enabled to avoid hard dependency when not used
-    from ..db.session import get_session
+    from app.db.session import get_session
     # Delegate lifecycle to get_session generator
     yield from get_session()
 
@@ -44,7 +44,7 @@ def maybe_session():
 def get_service(db: Any = Depends(maybe_session)) -> GameService:
     if _use_db and db is not None:
         # Dynamic import to avoid top-level dependency
-        from ..repositories.sqlalchemy import SQLAlchemyGameRepository
+        from app.repositories.sqlalchemy import SQLAlchemyGameRepository
 
         repo = SQLAlchemyGameRepository(db)
         return GameService(

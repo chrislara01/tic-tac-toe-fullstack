@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { GameRead, MoveResponse, Player } from '../api/types';
-import { getGame, postMove } from '../api/client';
-import { POSITION_TO_INDEX } from '../api/types';
+import type { GameRead, MoveResponse, Player } from '@/api/types';
+import { getGame, postMove } from '@/api/client';
+import { POSITION_TO_INDEX } from '@/api/types';
 
 function applyMoveToBoard(board: string, position: number, symbol: Player): string {
   const idx = POSITION_TO_INDEX[position];

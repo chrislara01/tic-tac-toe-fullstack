@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { CreateGameRequest, Difficulty, Player } from '../api/types';
+import type { CreateGameRequest, Difficulty, Player } from '@/api/types';
 
 export interface GameOptionsProps {
   onStart: (payload: CreateGameRequest) => void;

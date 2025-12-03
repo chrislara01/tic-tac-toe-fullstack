@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Iterable, List
 
-from ..board import Board
-from ..enums import Player
-from .base import Strategy
+from app.domain.board import Board
+from app.domain.enums import Player
+from app.domain.ai.base import Strategy
 
 
 PRIORITY_CORNERS = [7, 9, 1, 3]

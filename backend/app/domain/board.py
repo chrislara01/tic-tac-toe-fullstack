@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable, List, Optional, Sequence, Tuple
 
-from .enums import Player
-from .exceptions import InvalidBoardError, InvalidMoveError
+from app.domain.enums import Player
+from app.domain.exceptions import InvalidBoardError, InvalidMoveError
 
 # External position mapping (numpad layout):
 # 7 8 9

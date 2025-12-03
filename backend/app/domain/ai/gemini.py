@@ -5,9 +5,9 @@ import re
 import json
 from typing import Optional
 
-from ..board import Board
-from ..enums import Player
-from .base import Strategy
+from app.domain.board import Board
+from app.domain.enums import Player
+from app.domain.ai.base import Strategy
 
 # Lazy imports for the Gemini SDK to avoid hard dependency at import time
 # We'll import inside the strategy call and gracefully fallback if unavailable.
@@ -22,7 +22,7 @@ class GeminiStrategy(Strategy):
 
     def _fallback(self, board: Board, me: Player) -> int:
         # Local import to avoid circular dependency
-        from .medium import HeuristicStrategy
+        from app.domain.ai.medium import HeuristicStrategy
 
         logger.warning("Gemini will fallback to the heuristic mode")
         return HeuristicStrategy().select_move(board, me)

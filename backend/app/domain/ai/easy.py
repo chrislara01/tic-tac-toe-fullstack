@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import random
 
-from ..board import Board
-from ..enums import Player
-from .base import Strategy
+from app.domain.board import Board
+from app.domain.enums import Player
+from app.domain.ai.base import Strategy
 
 
 class RandomStrategy(Strategy):

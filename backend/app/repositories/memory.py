@@ -3,8 +3,8 @@ from __future__ import annotations
 from threading import RLock
 from typing import Dict, Optional
 
-from ..domain.game import Game
-from .base import GameRepository
+from app.domain.game import Game
+from app.repositories.base import GameRepository
 
 
 class InMemoryGameRepository(GameRepository):
